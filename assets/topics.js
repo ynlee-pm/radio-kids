@@ -24,7 +24,7 @@
           '<p class="tc-desc">' + escapeHtml(t.desc) + '</p>' +
           '<div class="tc-by">' + escapeHtml(t.by) + ' 제안</div>' +
         '</div>' +
-        '<div class="vote' + (isVoted ? " voted" : "") + '" data-id="' + t.id + '">' +
+        '<div class="vote' + (isVoted ? " voted" : "") + '" data-id="' + escapeHtml(String(t.id)) + '">' +
           '<span class="heart">' + (isVoted ? "♥" : "♡") + '</span>' +
           '<span class="count">' + t.votes + '</span>' +
         '</div>' +
