@@ -1,4 +1,4 @@
-# 라디오 만드는 밤
+# 라디오키즈
 
 라디오 만들기 소모임이 회차마다 주제를 정하고, 음악을 추천하고, 서로 논의하는 감성 웹사이트 (프로토타입).
 
@@ -13,7 +13,7 @@
 ## 구조
 
 - `index.html` — 홈(온에어 데스크): 이번 회차 + 추천곡 + 지난 회차 + 다음 주제 티저
-- `episode.html?vol=N` — 회차 상세: 추천곡 리스트 + 곡 추천 폼 + 논의(댓글)
+- `episode.html?vol=N` — 회차 상세: 추천곡 리스트(+유튜브 링크) + 곡 추천 폼 + 논의(댓글)
 - `topics.html` — 다음 주제 정하기: 제안 + 하트 투표
 - `assets/` — 스타일, 데이터 계층(시드 + localStorage), 페이지별 스크립트, 폰트
 
@@ -21,4 +21,5 @@
 
 - 데이터는 브라우저 `localStorage`에만 저장됩니다(서버 없음). 초기화하려면 콘솔에서
   `localStorage.removeItem("radioclub.v1"); localStorage.removeItem("radioclub.voted");`
-- 제목 폰트: GraceSerif 2.0 (self-host) / 본문: Pretendard (CDN)
+- 곡 추천 시 유튜브 링크를 넣으면 트랙에 "YouTube에서 듣기" 아웃링크(새 탭)가 생깁니다. http(s) 링크만 허용됩니다.
+- 제목/강조 폰트: HS봄바람체 2.0 (self-host, GraceSerif 폴백) / 본문: Pretendard (CDN)

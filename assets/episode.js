@@ -15,6 +15,11 @@
     return (d.getMonth() + 1) + "월 " + d.getDate() + "일";
   }
 
+  // Only render http(s) links — blocks javascript:/data: URLs from the href.
+  function isSafeUrl(u) {
+    return /^https?:\/\//i.test(String(u || "").trim());
+  }
+
   function render() {
     var ep = getEpisode(vol);
     if (!ep) {
@@ -23,9 +28,13 @@
     }
 
     var tracks = ep.tracks.map(function (t) {
+      var yt = isSafeUrl(t.url)
+        ? '<a class="t-yt" href="' + escapeHtml(t.url) + '" target="_blank" rel="noopener noreferrer">▶ YouTube에서 듣기 ↗</a>'
+        : '';
       return '<div class="track-item">' +
         '<div class="t-title">' + escapeHtml(t.title) + '</div>' +
         '<div class="t-meta"><b>' + escapeHtml(t.by) + '</b> · ' + escapeHtml(t.reason) + '</div>' +
+        yt +
       '</div>';
     }).join("");
 
@@ -51,6 +60,7 @@
         '<div class="row"><input name="title" placeholder="곡명 (예: 아티스트 — 제목)" required /></div>' +
         '<div class="row"><input name="by" placeholder="추천인" required /></div>' +
         '<div class="row"><input name="reason" placeholder="한 줄 사유" required /></div>' +
+        '<div class="row"><input name="url" type="url" placeholder="유튜브 링크 (선택)" /></div>' +
         '<button class="btn" type="submit">이 회차에 곡 추천하기</button>' +
       '</form>' +
 
@@ -67,7 +77,7 @@
     document.getElementById("track-form").addEventListener("submit", function (e) {
       e.preventDefault();
       var f = e.target;
-      addTrack(vol, { title: f.title.value.trim(), by: f.by.value.trim(), reason: f.reason.value.trim() });
+      addTrack(vol, { title: f.title.value.trim(), by: f.by.value.trim(), reason: f.reason.value.trim(), url: f.url.value.trim() });
       render();
     });
 
