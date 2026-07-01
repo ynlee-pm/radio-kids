@@ -1,4 +1,6 @@
 /* ===== Fonts ===== */
+/* @import must precede all other rules per CSS spec, or it is ignored. */
+@import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css");
 @font-face {
   font-family: "GraceSerif";
   src: url("fonts/GraceSerif2.0-Regular.otf") format("opentype");
@@ -11,7 +13,6 @@
   font-weight: 700;
   font-display: swap;
 }
-@import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css");
 
 /* ===== Palette ===== */
 :root {
