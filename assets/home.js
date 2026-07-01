@@ -16,10 +16,10 @@
       '<span class="kicker onair"><span class="pip"></span> On Air · Vol.' + current.vol + '</span>' +
       '<h1 class="display hero-title">' + escapeHtml(current.title) + '</h1>' +
       '<p class="hero-intro">' + escapeHtml(current.intro) + '</p>' +
-      '<a class="enter-link" href="episode.html?vol=' + current.vol + '">이 회차 들어가기 →</a>' +
+      '<a class="enter-link" href="episode.html?vol=' + current.vol + '">이야기 나누기 →</a>' +
     '</div>' +
     '<div class="hero-side">' +
-      '<p class="kicker side-label">이번 회차 추천곡</p>' + trackRows +
+      '<p class="kicker side-label">이번 주제 추천곡</p>' + trackRows +
     '</div>';
 
   // ----- archive -----

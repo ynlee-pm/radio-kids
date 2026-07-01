@@ -23,7 +23,7 @@
   function render() {
     var ep = getEpisode(vol);
     if (!ep) {
-      root.innerHTML = '<p style="margin:60px 0;">회차를 찾을 수 없어요. <a class="back-link" href="index.html">홈으로</a></p>';
+      root.innerHTML = '<p style="margin:60px 0;">주제를 찾을 수 없어요. <a class="back-link" href="index.html">홈으로</a></p>';
       return;
     }
 
@@ -61,14 +61,14 @@
         '<div class="row"><input name="by" placeholder="추천인" required /></div>' +
         '<div class="row"><input name="reason" placeholder="한 줄 사유" required /></div>' +
         '<div class="row"><input name="url" type="url" placeholder="유튜브 링크 (선택)" /></div>' +
-        '<button class="btn" type="submit">이 회차에 곡 추천하기</button>' +
+        '<button class="btn" type="submit">이 주제에 곡 추천하기</button>' +
       '</form>' +
 
       '<p class="kicker section-label">논의</p>' +
       '<div id="comments">' + comments + '</div>' +
       '<form class="form" id="comment-form">' +
         '<div class="row"><input name="name" placeholder="닉네임" required /></div>' +
-        '<div class="row"><textarea name="text" placeholder="이 회차에 대한 감상이나 이야기를 남겨주세요" required></textarea></div>' +
+        '<div class="row"><textarea name="text" placeholder="이 주제에 대한 감상이나 이야기를 남겨주세요" required></textarea></div>' +
         '<button class="btn" type="submit">댓글 남기기</button>' +
       '</form>' +
 
