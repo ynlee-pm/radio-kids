@@ -73,8 +73,34 @@ a { color: inherit; text-decoration: none; }
   background: var(--accent); display: inline-block;
 }
 
+/* ===== Home: hero (on-air desk) ===== */
+.hero { display: flex; gap: 44px; align-items: flex-start; margin-top: 44px; }
+.hero .hero-main { flex: 1.5; }
+.hero .hero-title { font-size: 60px; margin: 14px 0 20px; }
+.hero .hero-intro { font-size: 15px; color: #3A3A38; max-width: 34ch; margin: 0; }
+.hero .hero-side { flex: 1; }
+.hero .side-label { margin: 0 0 6px; }
+.trk { display: flex; justify-content: space-between; gap: 12px; padding: 12px 0; border-bottom: 1px solid var(--hair); font-size: 14px; }
+.trk .trk-by { color: var(--muted); white-space: nowrap; }
+.enter-link { display: inline-block; margin-top: 20px; font-size: 13px; color: var(--accent); }
+
+/* ===== Home: archive ===== */
+.archive-list { display: flex; flex-direction: column; }
+.archive-row { display: flex; align-items: baseline; gap: 18px; padding: 16px 0; border-bottom: 1px solid var(--hair); }
+.archive-row .a-vol { font-size: 12px; color: var(--muted); width: 56px; flex: none; }
+.archive-row .a-title { font-family: "GraceSerif", serif; font-size: 22px; }
+.archive-row:hover .a-title { color: var(--accent); }
+
+/* ===== Home: next teaser ===== */
+.next-teaser { margin: 40px 0 80px; }
+.next-teaser .nt-title { font-size: 30px; margin: 12px 0 10px; }
+.next-teaser p { color: #3A3A38; margin: 0 0 16px; }
+
 /* ===== Responsive ===== */
 @media (max-width: 640px) {
   .wrap { padding: 0 18px; }
   .site-nav { flex-direction: column; gap: 12px; align-items: flex-start; }
+  .hero { flex-direction: column; gap: 28px; }
+  .hero .hero-title { font-size: 40px; }
+  .next-teaser .nt-title { font-size: 24px; }
 }
