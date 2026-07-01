@@ -28,13 +28,23 @@
     }
 
     var tracks = ep.tracks.map(function (t) {
+      var song = t.song || t.title || "";   // fall back to old combined field
+      var artist = t.artist || "";
       var yt = isSafeUrl(t.url)
-        ? '<a class="t-yt" href="' + escapeHtml(t.url) + '" target="_blank" rel="noopener noreferrer">▶ YouTube에서 듣기 ↗</a>'
+        ? '<a class="rec-yt" href="' + escapeHtml(t.url) + '" target="_blank" rel="noopener noreferrer">▶ 듣기 ↗</a>'
         : '';
-      return '<div class="track-item">' +
-        '<div class="t-title">' + escapeHtml(t.title) + '</div>' +
-        '<div class="t-meta"><b>' + escapeHtml(t.by) + '</b> · ' + escapeHtml(t.reason) + '</div>' +
-        yt +
+      return '<div class="rec-card">' +
+        '<div class="rec-top">' +
+          '<div class="rec-head">' +
+            '<div class="rec-song">' + escapeHtml(song) + '</div>' +
+            '<div class="rec-artist">' + escapeHtml(artist) + '</div>' +
+          '</div>' +
+          yt +
+        '</div>' +
+        '<div class="rec-foot">' +
+          '<span class="rec-by">' + escapeHtml(t.by) + '</span>' +
+          '<span class="rec-reason">' + escapeHtml(t.reason) + '</span>' +
+        '</div>' +
       '</div>';
     }).join("");
 
@@ -57,9 +67,12 @@
       '<p class="kicker section-label">추천곡</p>' +
       '<div id="tracks">' + tracks + '</div>' +
       '<form class="form" id="track-form">' +
-        '<div class="row"><input name="title" placeholder="곡명 (예: 아티스트 — 제목)" required /></div>' +
-        '<div class="row"><input name="by" placeholder="추천인" required /></div>' +
-        '<div class="row"><input name="reason" placeholder="한 줄 사유" required /></div>' +
+        '<div class="row">' +
+          '<input name="artist" placeholder="가수" required />' +
+          '<input name="song" placeholder="곡명" required />' +
+        '</div>' +
+        '<div class="row"><input name="by" placeholder="닉네임" required /></div>' +
+        '<div class="row"><input name="reason" placeholder="추천하는 이유" required /></div>' +
         '<div class="row"><input name="url" type="url" placeholder="유튜브 링크 (선택)" /></div>' +
         '<button class="btn" type="submit">이 주제에 곡 추천하기</button>' +
       '</form>' +
@@ -77,7 +90,7 @@
     document.getElementById("track-form").addEventListener("submit", function (e) {
       e.preventDefault();
       var f = e.target;
-      addTrack(vol, { title: f.title.value.trim(), by: f.by.value.trim(), reason: f.reason.value.trim(), url: f.url.value.trim() });
+      addTrack(vol, { artist: f.artist.value.trim(), song: f.song.value.trim(), by: f.by.value.trim(), reason: f.reason.value.trim(), url: f.url.value.trim() });
       render();
     });
 

@@ -11,9 +11,9 @@
         intro: "창밖으로 빗소리가 번지는 오후. 각자의 방에서 같은 비를 듣는 우리가 고른, 조금 젖은 노래들.",
         coverColor: "#5B6B74",
         tracks: [
-          { title: "Nujabes — Feather", by: "지민", reason: "빗소리랑 제일 잘 어울려요", url: "https://www.youtube.com/results?search_query=Nujabes+Feather" },
-          { title: "김사월 — 봄눈", by: "유나", reason: "창가에 앉아 듣기 좋은", url: "https://www.youtube.com/results?search_query=김사월+봄눈" },
-          { title: "Bill Evans — Peace Piece", by: "도현", reason: "비 오면 자동재생됨", url: "https://www.youtube.com/results?search_query=Bill+Evans+Peace+Piece" }
+          { artist: "Nujabes", song: "Feather", by: "지민", reason: "빗소리랑 제일 잘 어울려요", url: "https://www.youtube.com/results?search_query=Nujabes+Feather" },
+          { artist: "김사월", song: "봄눈", by: "유나", reason: "창가에 앉아 듣기 좋은", url: "https://www.youtube.com/results?search_query=김사월+봄눈" },
+          { artist: "Bill Evans", song: "Peace Piece", by: "도현", reason: "비 오면 자동재생됨", url: "https://www.youtube.com/results?search_query=Bill+Evans+Peace+Piece" }
         ],
         comments: [
           { name: "지민", text: "이번 주제 너무 좋아요. 비 오는 날만 기다리게 될 듯.", at: "2026-06-28T09:12:00.000Z" },
@@ -26,8 +26,8 @@
         intro: "아무도 없는 새벽 정류장, 첫차를 기다리며 듣고 싶은 노래.",
         coverColor: "#7A6A55",
         tracks: [
-          { title: "검정치마 — 기다린 만큼, 더", by: "유나", reason: "새벽 공기 같은 인트로", url: "https://www.youtube.com/results?search_query=검정치마+기다린+만큼+더" },
-          { title: "Mac DeMarco — Chamber of Reflection", by: "지민", reason: "혼자여도 외롭지 않게", url: "https://www.youtube.com/results?search_query=Mac+DeMarco+Chamber+of+Reflection" }
+          { artist: "검정치마", song: "기다린 만큼, 더", by: "유나", reason: "새벽 공기 같은 인트로", url: "https://www.youtube.com/results?search_query=검정치마+기다린+만큼+더" },
+          { artist: "Mac DeMarco", song: "Chamber of Reflection", by: "지민", reason: "혼자여도 외롭지 않게", url: "https://www.youtube.com/results?search_query=Mac+DeMarco+Chamber+of+Reflection" }
         ],
         comments: [
           { name: "유나", text: "첫차 타면서 실제로 들었어요. 최고.", at: "2026-06-21T05:30:00.000Z" }
@@ -39,7 +39,7 @@
         intro: "더위가 한풀 꺾인 밤, 이어폰 한 쪽만 꽂고 걷고 싶은.",
         coverColor: "#4E5A4A",
         tracks: [
-          { title: "장기하 — 그건 니 생각이고", by: "도현", reason: "걸음 속도가 딱 맞아요", url: "https://www.youtube.com/results?search_query=장기하+그건+니+생각이고" }
+          { artist: "장기하", song: "그건 니 생각이고", by: "도현", reason: "걸음 속도가 딱 맞아요", url: "https://www.youtube.com/results?search_query=장기하+그건+니+생각이고" }
         ],
         comments: []
       }
@@ -79,7 +79,7 @@
     var state = loadState();
     var ep = state.episodes.filter(function (e) { return e.vol === vol; })[0];
     if (!ep) { return undefined; }
-    ep.tracks.push({ title: track.title, by: track.by, reason: track.reason, url: track.url || "" });
+    ep.tracks.push({ artist: track.artist, song: track.song, by: track.by, reason: track.reason, url: track.url || "" });
     saveState(state);
     return ep;
   }

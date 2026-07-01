@@ -7,7 +7,10 @@
 
   // ----- hero (latest episode) -----
   var trackRows = current.tracks.slice(0, 3).map(function (t) {
-    return '<div class="trk"><span>' + escapeHtml(t.title) +
+    var song = t.song || t.title || "";   // fall back to old combined field
+    var artist = t.artist || "";
+    return '<div class="trk"><span class="trk-song">' + escapeHtml(song) +
+      (artist ? ' <span class="trk-artist">— ' + escapeHtml(artist) + '</span>' : '') +
       '</span><span class="trk-by">' + escapeHtml(t.by) + '</span></div>';
   }).join("");
 

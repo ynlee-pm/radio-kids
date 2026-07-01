@@ -96,6 +96,7 @@ a { color: inherit; text-decoration: none; }
 .hero .hero-side { flex: 1; }
 .hero .side-label { margin: 0 0 6px; }
 .trk { display: flex; justify-content: space-between; gap: 12px; padding: 12px 0; border-bottom: 1px solid var(--hair); font-size: 14px; }
+.trk .trk-artist { color: var(--muted); }
 .trk .trk-by { color: var(--muted); white-space: nowrap; }
 .enter-link { display: inline-block; margin-top: 20px; font-size: 13px; color: var(--accent); }
 
@@ -116,16 +117,32 @@ a { color: inherit; text-decoration: none; }
 .ep-title { font-size: 56px; margin: 14px 0 18px; }
 .ep-intro { font-size: 15px; color: #3A3A38; max-width: 46ch; margin: 0; }
 .section-label { margin: 48px 0 14px; }
-.track-item { padding: 16px 0; border-bottom: 1px solid var(--hair); }
-.track-item .t-title { font-size: 16px; }
-.track-item .t-meta { font-size: 13px; color: var(--muted); margin-top: 4px; }
-.track-item .t-meta b { color: var(--ink); font-weight: 500; }
-.track-item .t-yt {
-  display: inline-flex; align-items: center; gap: 5px; margin-top: 9px;
-  font-size: 12px; color: var(--accent);
-  border: 1px solid var(--hair); border-radius: 999px; padding: 5px 12px;
+/* Recommendation card — 곡명 / 가수 / 닉네임 / 코멘트 are distinguished by
+   role (color, position, weight), not by size hierarchy. */
+.rec-card {
+  background: #fff; border: 1px solid var(--hair); border-radius: 14px;
+  padding: 18px 20px; margin-bottom: 14px;
 }
-.track-item .t-yt:hover { border-color: var(--accent); }
+.rec-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 14px; }
+.rec-head { min-width: 0; }
+.rec-song { font-size: 16px; font-weight: 600; color: var(--ink); line-height: 1.35; }
+.rec-artist { font-size: 13px; color: var(--muted); margin-top: 3px; }
+.rec-yt {
+  flex: none; display: inline-flex; align-items: center; gap: 4px;
+  font-size: 11.5px; color: var(--accent);
+  border: 1px solid var(--hair); border-radius: 999px; padding: 5px 11px;
+  white-space: nowrap;
+}
+.rec-yt:hover { border-color: var(--accent); }
+.rec-foot {
+  display: flex; align-items: baseline; gap: 10px;
+  margin-top: 14px; padding-top: 12px; border-top: 1px solid var(--hair);
+}
+.rec-by {
+  flex: none; font-size: 11px; font-weight: 600; color: var(--accent);
+  letter-spacing: 0.02em;
+}
+.rec-reason { font-size: 13.5px; color: #3A3A38; line-height: 1.55; }
 .comment { padding: 16px 0; border-bottom: 1px solid var(--hair); }
 .comment .c-name { font-size: 13px; font-weight: 600; }
 .comment .c-text { margin: 4px 0 0; }
