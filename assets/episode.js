@@ -71,9 +71,11 @@
           '<input name="artist" placeholder="가수" required />' +
           '<input name="song" placeholder="곡명" required />' +
         '</div>' +
-        '<div class="row"><input name="by" placeholder="닉네임" required /></div>' +
-        '<div class="row"><input name="reason" placeholder="추천하는 이유" required /></div>' +
         '<div class="row"><input name="url" type="url" placeholder="유튜브 링크 (선택)" /></div>' +
+        '<div class="row row-top">' +
+          '<input name="by" class="f-nick" placeholder="닉네임" required />' +
+          '<textarea name="reason" class="f-reason" placeholder="추천하는 이유" required></textarea>' +
+        '</div>' +
         '<button class="btn" type="submit">이 주제에 곡 추천하기</button>' +
       '</form>' +
 
