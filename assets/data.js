@@ -77,3 +77,25 @@ export async function getTopics() {
   list.sort(function (a, b) { return b.votes - a.votes; });
   return list;
 }
+
+async function myId() {
+  const s = await getSession();
+  if (!s) throw new Error("로그인이 필요해요");
+  return s.user.id;
+}
+export async function addTrack(episodeId, t) {
+  const uid = await myId();
+  const { error } = await supabase.from("tracks").insert({
+    episode_id: episodeId, artist: t.artist, song: t.song, url: t.url || "", reason: t.reason, created_by: uid });
+  if (error) throw error;
+}
+export async function addComment(episodeId, c) {
+  const uid = await myId();
+  const { error } = await supabase.from("comments").insert({ episode_id: episodeId, body: c.body, created_by: uid });
+  if (error) throw error;
+}
+export async function addTopic(t) {
+  const uid = await myId();
+  const { error } = await supabase.from("topics").insert({ title: t.title, description: t.description, created_by: uid });
+  if (error) throw error;
+}
