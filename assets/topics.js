@@ -75,7 +75,7 @@ import { getTopics, addTopic, signInWithGoogle, escapeHtml, canEdit, updateTopic
       formHost.outerHTML =
         '<form class="form" id="topic-form">' +
           '<div class="row"><input name="title" placeholder="주제 (예: 첫사랑의 노래)" required /></div>' +
-          '<div class="row"><input name="desc" placeholder="한 줄 설명" required /></div>' +
+          '<div class="row"><textarea name="desc" class="ta-desc" placeholder="설명" required></textarea></div>' +
           '<button class="btn" type="submit">주제 제안하기</button>' +
         '</form>';
       formHost = document.getElementById("topic-form");
