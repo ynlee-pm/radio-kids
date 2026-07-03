@@ -49,12 +49,15 @@ import { getTopics, addTopic, signInWithGoogle, escapeHtml, canEdit, updateTopic
               '<p class="tc-desc">' + escapeHtml(t.description) + '</p>' +
               '<div class="tc-foot">' +
                 '<span class="tc-by">' + escapeHtml(t.author) + ' 제안</span>' +
-                '<span class="tc-actions">' + confirmBtn + menu + '</span>' +
+                (confirmBtn ? '<span class="tc-actions">' + confirmBtn + '</span>' : '') +
               '</div>' +
             '</div>' +
-            '<div class="vote' + (voted ? ' voted' : '') + '">' +
-              '<span class="heart">' + (voted ? '♥' : '♡') + '</span>' +
-              '<span class="count">' + escapeHtml(String(t.votes)) + '</span>' +
+            '<div class="tc-right">' +
+              menu +
+              '<div class="vote' + (voted ? ' voted' : '') + '">' +
+                '<span class="heart">' + (voted ? '♥' : '♡') + '</span>' +
+                '<span class="count">' + escapeHtml(String(t.votes)) + '</span>' +
+              '</div>' +
             '</div>' +
           '</div>';
         }).join("")

@@ -27,16 +27,21 @@ export async function mountNav(linksSelector) {
   }
   var html = '<a href="index.html">홈</a><a href="topics.html">다음 주제</a>';
   if (me.session) {
-    html += '<a class="nav-profile" href="profile.html" title="내 프로필" aria-label="내 프로필">' +
-      '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4.2 3.6-6.5 8-6.5s8 2.3 8 6.5"/></svg></a>';
-    if (me.profile && me.profile.is_admin) html += '<a href="admin.html">권한</a>';
-    html += '<button class="nav-auth" id="nav-signout">로그아웃</button>';
+    html += '<div class="menu-wrap nav-profile-wrap">' +
+      '<button type="button" class="nav-profile" id="nav-profile-btn" aria-label="내 메뉴">' +
+        '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4.2 3.6-6.5 8-6.5s8 2.3 8 6.5"/></svg>' +
+      '</button></div>';
   } else {
     html += '<button class="nav-auth" id="nav-signin">로그인</button>';
   }
   el.innerHTML = html;
-  var so = document.getElementById("nav-signout");
-  if (so) so.addEventListener("click", async function () { await signOut(); location.reload(); });
+  var pb = document.getElementById("nav-profile-btn");
+  if (pb) {
+    var items = [{ label: "프로필 설정", onClick: function () { location.href = "profile.html"; } }];
+    if (me.profile && me.profile.is_admin) items.push({ label: "권한", onClick: function () { location.href = "admin.html"; } });
+    items.push({ label: "로그아웃", onClick: async function () { await signOut(); location.reload(); } });
+    attachMenu(pb, items);
+  }
   var si = document.getElementById("nav-signin");
   if (si) si.addEventListener("click", function () { signInWithGoogle(); });
 }

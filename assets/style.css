@@ -74,7 +74,11 @@ a { color: inherit; text-decoration: none; }
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 26px 0;
+  padding: 20px 0;
+  position: sticky;
+  top: 0;
+  background: var(--bg);
+  z-index: 50;
 }
 .site-nav .brand { font-family: "ZenSerif", "HSBombaram", "GraceSerif", serif; font-size: 18px; display: inline-flex; align-items: center; gap: 8px; }
 .site-nav .brand .brand-icon { color: var(--accent); flex: none; }
@@ -82,8 +86,9 @@ a { color: inherit; text-decoration: none; }
 .site-nav .links a:hover { color: var(--accent); }
 .nav-auth { font-family: inherit; font-size: 13px; cursor: pointer; background: none; border: 0; color: var(--ink); padding: 0; }
 .nav-auth:hover { color: var(--accent); }
-.site-nav .links .nav-profile { display: inline-flex; align-items: center; color: var(--ink); }
+.site-nav .links .nav-profile { display: inline-flex; align-items: center; color: var(--ink); background: none; border: 0; padding: 0; cursor: pointer; }
 .site-nav .links .nav-profile:hover { color: var(--accent); }
+.nav-profile-wrap { display: inline-flex; }
 
 /* Profile page fields */
 .pf-row { display: flex; align-items: center; gap: 14px; padding: 12px 0; border-bottom: 1px solid var(--hair); }
@@ -137,6 +142,7 @@ a { color: inherit; text-decoration: none; }
   padding: 18px 20px; margin-bottom: 14px;
 }
 .rec-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 14px; }
+.rec-top .rec-actions { display: flex; flex-direction: column; align-items: flex-end; gap: 8px; flex: none; }
 .rec-head { min-width: 0; }
 .rec-song { font-size: 16px; font-weight: 600; color: var(--ink); line-height: 1.35; }
 .rec-artist { font-size: 13px; color: var(--muted); margin-top: 3px; }
@@ -203,6 +209,7 @@ a { color: inherit; text-decoration: none; }
 .topic-card .tc-body { flex: 1; min-width: 0; }
 .topic-card .tc-title-row { display: flex; justify-content: space-between; align-items: flex-start; gap: 10px; }
 .topic-card .tc-title { font-family: "ZenSerif", "HSBombaram", "GraceSerif", serif; font-size: 24px; }
+.topic-card .tc-right { display: flex; flex-direction: column; align-items: center; gap: 8px; flex: none; }
 .topic-card .tc-desc { font-size: 13px; color: #3A3A38; margin: 4px 0 0; }
 .topic-card .tc-by { font-size: 12px; color: var(--muted); }
 .topic-card .tc-foot { display: flex; align-items: center; gap: 12px; margin-top: 10px; }

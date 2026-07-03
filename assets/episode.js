@@ -71,7 +71,7 @@ import {
     var trackCards = tracks.length
       ? tracks.map(function (t) {
           var yt = isSafeUrl(t.url)
-            ? '<a class="rec-yt" href="' + escapeHtml(t.url) + '" target="_blank" rel="noopener noreferrer">▶ 듣기 ↗</a>'
+            ? '<a class="rec-yt" href="' + escapeHtml(t.url) + '" target="_blank" rel="noopener noreferrer">▶ 듣기</a>'
             : '';
           var menu = canEdit(t, me) ? menuBtnHtml() : '';
           return '<div class="rec-card" data-id="' + escapeHtml(t.id) + '">' +
@@ -80,8 +80,7 @@ import {
                 '<div class="rec-song">' + escapeHtml(t.song) + '</div>' +
                 '<div class="rec-artist">' + escapeHtml(t.artist) + '</div>' +
               '</div>' +
-              yt +
-              menu +
+              '<div class="rec-actions">' + menu + yt + '</div>' +
             '</div>' +
             '<div class="rec-foot">' +
               '<span class="rec-by">' + escapeHtml(t.author) + '</span>' +
@@ -125,7 +124,7 @@ import {
           '<div class="row row-top">' +
             '<textarea name="reason" class="f-reason" placeholder="추천하는 이유" required></textarea>' +
           '</div>' +
-          '<button class="btn" type="submit">추천 올리기</button>' +
+          '<button class="btn" type="submit">추천하기</button>' +
         '</form>'
       : '<button class="btn" id="track-login-btn">로그인하고 참여하기</button>';
 
