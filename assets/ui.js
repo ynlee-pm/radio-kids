@@ -25,13 +25,14 @@ export async function mountNav(linksSelector) {
     console.error("mountNav: getMe threw, rendering logged-out nav:", e);
     me = { session: null, profile: null };
   }
-  var html = '<a href="index.html">홈</a><a href="topics.html">다음 주제 정하기</a>';
+  var html = '<a href="index.html">홈</a><a href="topics.html">다음 주제</a>';
   if (me.session) {
-    html += '<a href="profile.html">' + escapeHtml(me.profile ? me.profile.nickname : "프로필") + '</a>';
+    html += '<a class="nav-profile" href="profile.html" title="내 프로필" aria-label="내 프로필">' +
+      '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4.2 3.6-6.5 8-6.5s8 2.3 8 6.5"/></svg></a>';
     if (me.profile && me.profile.is_admin) html += '<a href="admin.html">권한</a>';
     html += '<button class="nav-auth" id="nav-signout">로그아웃</button>';
   } else {
-    html += '<button class="nav-auth" id="nav-signin">Google 로그인</button>';
+    html += '<button class="nav-auth" id="nav-signin">로그인</button>';
   }
   el.innerHTML = html;
   var so = document.getElementById("nav-signout");

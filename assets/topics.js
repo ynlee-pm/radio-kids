@@ -41,17 +41,16 @@ import { getTopics, addTopic, signInWithGoogle, escapeHtml, canEdit, updateTopic
             : '';
           var voted = myVotes.has(t.id);
           var confirmBtn = isAdmin
-            ? '<button type="button" class="btn confirm-btn">확정</button>'
+            ? '<button type="button" class="confirm-btn">확정</button>'
             : '';
           return '<div class="topic-card" data-id="' + escapeHtml(t.id) + '">' +
             '<div class="tc-body">' +
-              '<div class="tc-title-row">' +
-                '<div class="tc-title">' + escapeHtml(t.title) + '</div>' +
-                menu +
-              '</div>' +
+              '<div class="tc-title">' + escapeHtml(t.title) + '</div>' +
               '<p class="tc-desc">' + escapeHtml(t.description) + '</p>' +
-              '<div class="tc-by">' + escapeHtml(t.author) + ' 제안</div>' +
-              confirmBtn +
+              '<div class="tc-foot">' +
+                '<span class="tc-by">' + escapeHtml(t.author) + ' 제안</span>' +
+                '<span class="tc-actions">' + confirmBtn + menu + '</span>' +
+              '</div>' +
             '</div>' +
             '<div class="vote' + (voted ? ' voted' : '') + '">' +
               '<span class="heart">' + (voted ? '♥' : '♡') + '</span>' +
@@ -89,7 +88,7 @@ import { getTopics, addTopic, signInWithGoogle, escapeHtml, canEdit, updateTopic
         }
       });
     } else {
-      formHost.outerHTML = '<button class="btn" id="topic-login-btn">Google 로그인하고 참여하기</button>';
+      formHost.outerHTML = '<button class="btn" id="topic-login-btn">로그인하고 참여하기</button>';
       formHost = document.getElementById("topic-login-btn");
       formHost.addEventListener("click", function () { signInWithGoogle(); });
     }
@@ -127,7 +126,7 @@ import { getTopics, addTopic, signInWithGoogle, escapeHtml, canEdit, updateTopic
       if (!voteEl) return;
       voteEl.addEventListener("click", async function () {
         if (!loggedIn) {
-          if (confirm("투표하려면 Google 로그인이 필요해요. 로그인할까요?")) {
+          if (confirm("투표하려면 로그인이 필요해요. 로그인할까요?")) {
             signInWithGoogle();
           }
           return;

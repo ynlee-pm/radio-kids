@@ -125,29 +125,31 @@ import {
           '<div class="row row-top">' +
             '<textarea name="reason" class="f-reason" placeholder="추천하는 이유" required></textarea>' +
           '</div>' +
-          '<button class="btn" type="submit">이 주제에 곡 추천하기</button>' +
+          '<button class="btn" type="submit">추천 올리기</button>' +
         '</form>'
-      : '<button class="btn" id="track-login-btn">Google 로그인하고 참여하기</button>';
+      : '<button class="btn" id="track-login-btn">로그인하고 참여하기</button>';
 
     var commentForm = loggedIn
       ? '<form class="form" id="comment-form">' +
           '<div class="row"><textarea name="body" placeholder="이 주제에 대한 감상이나 이야기를 남겨주세요" required></textarea></div>' +
           '<button class="btn" type="submit">댓글 남기기</button>' +
         '</form>'
-      : '<button class="btn" id="comment-login-btn">Google 로그인하고 참여하기</button>';
+      : '<button class="btn" id="comment-login-btn">로그인하고 참여하기</button>';
 
     root.innerHTML =
       head +
 
-      '<p class="kicker section-label">추천곡</p>' +
-      '<div id="tracks">' + trackCards + '</div>' +
-      trackForm +
+      '<section class="ep-section">' +
+        '<p class="kicker section-label">추천곡</p>' +
+        '<div id="tracks">' + trackCards + '</div>' +
+        trackForm +
+      '</section>' +
 
-      '<p class="kicker section-label">논의</p>' +
-      '<div id="comments">' + commentList + '</div>' +
-      commentForm +
-
-      '<a class="back-link" href="index.html">← 홈으로</a>';
+      '<section class="ep-section ep-section-comments">' +
+        '<p class="kicker section-label">댓글</p>' +
+        '<div id="comments">' + commentList + '</div>' +
+        commentForm +
+      '</section>';
 
     if (loggedIn) {
       var tf = document.getElementById("track-form");
