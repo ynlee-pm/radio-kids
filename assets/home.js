@@ -1,3 +1,11 @@
+import { mountNav } from "./ui.js";
+
+await mountNav(".site-nav .links");
+
+// Task 3: rewritten to async — old localStorage-based rendering below no
+// longer works now that data.js only exports auth/profile functions.
+// Left commented out so this page loads cleanly (nav-only) until Task 3.
+/*
 (function () {
   "use strict";
 
@@ -80,3 +88,4 @@
     '<p>' + (top ? "지금 가장 많은 표를 받은 주제예요. 함께 정해요." : "첫 주제를 제안해보세요.") + '</p>' +
     '<a class="enter-link" href="topics.html">다음 주제 정하러 가기 →</a>';
 })();
+*/

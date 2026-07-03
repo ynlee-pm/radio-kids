@@ -78,8 +78,10 @@ a { color: inherit; text-decoration: none; }
 }
 .site-nav .brand { font-family: "ZenSerif", "HSBombaram", "GraceSerif", serif; font-size: 18px; display: inline-flex; align-items: center; gap: 8px; }
 .site-nav .brand .brand-icon { color: var(--accent); flex: none; }
-.site-nav .links { display: flex; gap: 22px; font-size: 13px; color: var(--ink); }
+.site-nav .links { display: flex; align-items: center; gap: 22px; font-size: 13px; color: var(--ink); }
 .site-nav .links a:hover { color: var(--accent); }
+.nav-auth { font-family: inherit; font-size: 13px; cursor: pointer; background: none; border: 0; color: var(--ink); padding: 0; }
+.nav-auth:hover { color: var(--accent); }
 
 /* ===== On-air label ===== */
 .onair { display: inline-flex; align-items: center; gap: 8px; }

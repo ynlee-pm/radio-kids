@@ -1,3 +1,11 @@
+import { mountNav } from "./ui.js";
+
+await mountNav(".site-nav .links");
+
+// Task 3: rewritten to async — old localStorage-based rendering below no
+// longer works now that data.js only exports auth/profile functions.
+// Left commented out so this page loads cleanly (nav-only) until Task 3.
+/*
 (function () {
   "use strict";
 
@@ -167,3 +175,4 @@
 
   render();
 })();
+*/
