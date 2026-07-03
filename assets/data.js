@@ -126,3 +126,13 @@ export async function confirmTopic(topicId) {
   if (error) throw error;
   return data;
 }
+
+export async function listProfiles() {
+  const { data, error } = await supabase.from("profiles").select("id,nickname,is_admin").order("created_at", { ascending: true });
+  if (error) throw error;
+  return data || [];
+}
+export async function setAdmin(userId, isAdmin) {
+  const { error } = await supabase.from("profiles").update({ is_admin: isAdmin }).eq("id", userId);
+  if (error) throw error;
+}
