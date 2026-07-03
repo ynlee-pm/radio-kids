@@ -100,6 +100,19 @@ export async function addTopic(t) {
   if (error) throw error;
 }
 
+export async function getMyVotes() {
+  const s = await getSession(); if (!s) return new Set();
+  const { data } = await supabase.from("votes").select("topic_id").eq("user_id", s.user.id);
+  return new Set((data || []).map(function (v) { return v.topic_id; }));
+}
+export async function toggleVote(topicId) {
+  const s = await getSession(); if (!s) throw new Error("로그인이 필요해요");
+  const uid = s.user.id;
+  const { data } = await supabase.from("votes").select("topic_id").eq("user_id", uid).eq("topic_id", topicId).maybeSingle();
+  if (data) { await supabase.from("votes").delete().eq("user_id", uid).eq("topic_id", topicId); }
+  else { await supabase.from("votes").insert({ user_id: uid, topic_id: topicId }); }
+}
+
 export async function updateTrack(id, f) { const { error } = await supabase.from("tracks").update(f).eq("id", id); if (error) throw error; }
 export async function deleteTrack(id) { const { error } = await supabase.from("tracks").delete().eq("id", id); if (error) throw error; }
 export async function deleteComment(id) { const { error } = await supabase.from("comments").delete().eq("id", id); if (error) throw error; }

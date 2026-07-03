@@ -1,5 +1,5 @@
 import { mountNav, getMe, attachMenu } from "./ui.js";
-import { getTopics, addTopic, signInWithGoogle, escapeHtml, canEdit, updateTopic, deleteTopic } from "./data.js";
+import { getTopics, addTopic, signInWithGoogle, escapeHtml, canEdit, updateTopic, deleteTopic, getMyVotes, toggleVote } from "./data.js";
 
 (async function () {
   "use strict";
@@ -25,11 +25,19 @@ import { getTopics, addTopic, signInWithGoogle, escapeHtml, canEdit, updateTopic
       me = { session: null, profile: null };
     }
 
+    var myVotes = new Set();
+    try {
+      myVotes = await getMyVotes();
+    } catch (e) {
+      console.error("getMyVotes failed:", e);
+    }
+
     listEl.innerHTML = topics.length
       ? topics.map(function (t) {
           var menu = canEdit(t, me)
             ? '<div class="menu-wrap"><button type="button" class="menu-btn" aria-label="더보기">⋯</button></div>'
             : '';
+          var voted = myVotes.has(t.id);
           return '<div class="topic-card" data-id="' + escapeHtml(t.id) + '">' +
             '<div class="tc-body">' +
               '<div class="tc-title-row">' +
@@ -39,8 +47,8 @@ import { getTopics, addTopic, signInWithGoogle, escapeHtml, canEdit, updateTopic
               '<p class="tc-desc">' + escapeHtml(t.description) + '</p>' +
               '<div class="tc-by">' + escapeHtml(t.author) + ' 제안</div>' +
             '</div>' +
-            '<div class="vote">' +
-              '<span class="heart">♡</span>' +
+            '<div class="vote' + (voted ? ' voted' : '') + '">' +
+              '<span class="heart">' + (voted ? '♥' : '♡') + '</span>' +
               '<span class="count">' + escapeHtml(String(t.votes)) + '</span>' +
             '</div>' +
           '</div>';
@@ -48,6 +56,7 @@ import { getTopics, addTopic, signInWithGoogle, escapeHtml, canEdit, updateTopic
       : '<p style="color:var(--muted);">아직 제안된 주제가 없어요.</p>';
 
     wireTopicMenus(topics, me);
+    wireVoteButtons(topics, me);
 
     var loggedIn = !!(me && me.session);
 
@@ -99,6 +108,31 @@ import { getTopics, addTopic, signInWithGoogle, escapeHtml, canEdit, updateTopic
             }
           } }
       ]);
+    });
+  }
+
+  function wireVoteButtons(topics, me) {
+    var loggedIn = !!(me && me.session);
+    topics.forEach(function (t) {
+      var card = listEl.querySelector('.topic-card[data-id="' + cssEscape(t.id) + '"]');
+      if (!card) return;
+      var voteEl = card.querySelector(".vote");
+      if (!voteEl) return;
+      voteEl.addEventListener("click", async function () {
+        if (!loggedIn) {
+          if (confirm("투표하려면 Google 로그인이 필요해요. 로그인할까요?")) {
+            signInWithGoogle();
+          }
+          return;
+        }
+        try {
+          await toggleVote(t.id);
+          await render();
+        } catch (err) {
+          console.error("toggleVote failed:", err);
+          alert("투표하지 못했어요. 잠시 후 다시 시도해주세요.");
+        }
+      });
     });
   }
 
