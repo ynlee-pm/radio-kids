@@ -45,8 +45,9 @@ export async function getEpisodes() {
   return data || [];
 }
 export async function getEpisodeByVol(vol) {
-  const { data } = await supabase.from("episodes")
+  const { data, error } = await supabase.from("episodes")
     .select("id,vol,title,intro,created_by,created_at").eq("vol", Number(vol)).maybeSingle();
+  if (error) throw error;   // surface real errors instead of silently "not found"
   return data || null;
 }
 export async function getTracks(episodeId) {
