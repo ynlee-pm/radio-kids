@@ -1,5 +1,5 @@
 import { mountNav, getMe, attachMenu } from "./ui.js";
-import { getTopics, addTopic, signInWithGoogle, escapeHtml, canEdit, updateTopic, deleteTopic, getMyVotes, toggleVote } from "./data.js";
+import { getTopics, addTopic, signInWithGoogle, escapeHtml, canEdit, updateTopic, deleteTopic, getMyVotes, toggleVote, confirmTopic } from "./data.js";
 
 (async function () {
   "use strict";
@@ -32,12 +32,17 @@ import { getTopics, addTopic, signInWithGoogle, escapeHtml, canEdit, updateTopic
       console.error("getMyVotes failed:", e);
     }
 
+    var isAdmin = !!(me && me.profile && me.profile.is_admin);
+
     listEl.innerHTML = topics.length
       ? topics.map(function (t) {
           var menu = canEdit(t, me)
             ? '<div class="menu-wrap"><button type="button" class="menu-btn" aria-label="더보기">⋯</button></div>'
             : '';
           var voted = myVotes.has(t.id);
+          var confirmBtn = isAdmin
+            ? '<button type="button" class="btn confirm-btn">확정</button>'
+            : '';
           return '<div class="topic-card" data-id="' + escapeHtml(t.id) + '">' +
             '<div class="tc-body">' +
               '<div class="tc-title-row">' +
@@ -46,6 +51,7 @@ import { getTopics, addTopic, signInWithGoogle, escapeHtml, canEdit, updateTopic
               '</div>' +
               '<p class="tc-desc">' + escapeHtml(t.description) + '</p>' +
               '<div class="tc-by">' + escapeHtml(t.author) + ' 제안</div>' +
+              confirmBtn +
             '</div>' +
             '<div class="vote' + (voted ? ' voted' : '') + '">' +
               '<span class="heart">' + (voted ? '♥' : '♡') + '</span>' +
@@ -57,6 +63,7 @@ import { getTopics, addTopic, signInWithGoogle, escapeHtml, canEdit, updateTopic
 
     wireTopicMenus(topics, me);
     wireVoteButtons(topics, me);
+    if (isAdmin) wireConfirmButtons(topics);
 
     var loggedIn = !!(me && me.session);
 
@@ -131,6 +138,26 @@ import { getTopics, addTopic, signInWithGoogle, escapeHtml, canEdit, updateTopic
         } catch (err) {
           console.error("toggleVote failed:", err);
           alert("투표하지 못했어요. 잠시 후 다시 시도해주세요.");
+        }
+      });
+    });
+  }
+
+  function wireConfirmButtons(topics) {
+    topics.forEach(function (t) {
+      var card = listEl.querySelector('.topic-card[data-id="' + cssEscape(t.id) + '"]');
+      if (!card) return;
+      var btn = card.querySelector(".confirm-btn");
+      if (!btn) return;
+      btn.addEventListener("click", async function () {
+        if (!confirm("'" + t.title + "'을(를) 새 주제로 확정할까요?")) return;
+        try {
+          await confirmTopic(t.id);
+          await render();
+          alert("'" + t.title + "'이(가) 새 주제가 됐어요");
+        } catch (err) {
+          console.error("confirmTopic failed:", err);
+          alert("주제를 확정하지 못했어요. 잠시 후 다시 시도해주세요.");
         }
       });
     });

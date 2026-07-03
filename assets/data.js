@@ -120,3 +120,9 @@ export async function updateTopic(id, f) { const { error } = await supabase.from
 export async function deleteTopic(id) { const { error } = await supabase.from("topics").delete().eq("id", id); if (error) throw error; }
 export async function updateEpisode(id, f) { const { error } = await supabase.from("episodes").update(f).eq("id", id); if (error) throw error; }
 export async function deleteEpisode(id) { const { error } = await supabase.from("episodes").delete().eq("id", id); if (error) throw error; }
+
+export async function confirmTopic(topicId) {
+  const { data, error } = await supabase.rpc("confirm_topic", { p_topic: topicId });
+  if (error) throw error;
+  return data;
+}
