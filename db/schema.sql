@@ -117,19 +117,19 @@ create policy episodes_del on episodes for delete using (public.is_admin());
 -- tracks
 create policy tracks_sel on tracks for select using (true);
 create policy tracks_ins on tracks for insert with check (auth.uid() = created_by);
-create policy tracks_upd on tracks for update using (created_by = auth.uid() or public.is_admin());
+create policy tracks_upd on tracks for update using (created_by = auth.uid() or public.is_admin()) with check (created_by = auth.uid() or public.is_admin());
 create policy tracks_del on tracks for delete using (created_by = auth.uid() or public.is_admin());
 
 -- comments
 create policy comments_sel on comments for select using (true);
 create policy comments_ins on comments for insert with check (auth.uid() = created_by);
-create policy comments_upd on comments for update using (created_by = auth.uid() or public.is_admin());
+create policy comments_upd on comments for update using (created_by = auth.uid() or public.is_admin()) with check (created_by = auth.uid() or public.is_admin());
 create policy comments_del on comments for delete using (created_by = auth.uid() or public.is_admin());
 
 -- topics (status flips to 'confirmed' only via confirm_topic RPC, which is security definer)
 create policy topics_sel on topics for select using (true);
 create policy topics_ins on topics for insert with check (auth.uid() = created_by);
-create policy topics_upd on topics for update using (created_by = auth.uid() or public.is_admin());
+create policy topics_upd on topics for update using (created_by = auth.uid() or public.is_admin()) with check (created_by = auth.uid() or public.is_admin());
 create policy topics_del on topics for delete using (created_by = auth.uid() or public.is_admin());
 
 -- votes

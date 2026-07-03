@@ -22,7 +22,13 @@ const root = document.getElementById("admin");
       b.addEventListener("click", async function () {
         var to = b.getAttribute("data-to") === "1";
         if (!to && b.getAttribute("data-id") === me.profile.id && !confirm("본인 admin 권한을 해제할까요?")) return;
-        await setAdmin(b.getAttribute("data-id"), to); await render();
+        try {
+          await setAdmin(b.getAttribute("data-id"), to);
+          await render();
+        } catch (e) {
+          console.error("setAdmin failed:", e);
+          alert("권한 변경에 실패했어요. 잠시 후 다시 시도해주세요.");
+        }
       });
     });
   }

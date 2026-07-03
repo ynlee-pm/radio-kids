@@ -233,7 +233,7 @@ insert into topics (title, description) values
 - [ ] **Step 4: 정적 검증** — SQL 문법 자체 점검(테이블 6개·정책·함수·트리거 존재, 컬럼명이 spec과 일치). 라이브 적용은 유나 님이 수행.
 
 Run: `grep -c "create policy" db/schema.sql`
-Expected: `18` (정책 18개)
+Expected: `22` (정책 22개)
 
 - [ ] **Step 5: 커밋**
 
