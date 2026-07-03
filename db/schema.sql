@@ -69,7 +69,13 @@ $$;
 create or replace function public.guard_profile_admin()
 returns trigger language plpgsql security definer set search_path = public as $$
 begin
-  if new.is_admin is distinct from old.is_admin and not public.is_admin() then
+  -- Only block authenticated NON-admin users (via the client) from changing is_admin.
+  -- The SQL editor / service_role has auth.uid() = null and is trusted (RLS already
+  -- blocks null-auth clients from updating profile rows), so allow that path — this
+  -- is what lets you bootstrap the very first admin.
+  if new.is_admin is distinct from old.is_admin
+     and auth.uid() is not null
+     and not public.is_admin() then
     raise exception 'only admin can change is_admin';
   end if;
   return new;
