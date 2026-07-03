@@ -122,6 +122,82 @@
     return t;
   }
 
+  function updateTopic(id, fields) {
+    var state = loadState();
+    var t = state.topics.filter(function (x) { return x.id === id; })[0];
+    if (!t) { return undefined; }
+    if (fields.title !== undefined) { t.title = fields.title; }
+    if (fields.desc !== undefined) { t.desc = fields.desc; }
+    if (fields.by !== undefined) { t.by = fields.by; }
+    saveState(state);
+    return t;
+  }
+
+  function deleteTopic(id) {
+    var state = loadState();
+    state.topics = state.topics.filter(function (x) { return x.id !== id; });
+    saveState(state);
+    return true;
+  }
+
+  // ----- episode (주제) management -----
+  function addEpisode(ep) {
+    var state = loadState();
+    var maxVol = state.episodes.reduce(function (m, e) {
+      return Math.max(m, Number(e.vol) || 0);
+    }, 0);
+    var e = {
+      vol: maxVol + 1,
+      title: ep.title,
+      intro: ep.intro,
+      coverColor: "#5B6B74",
+      tracks: [],
+      comments: []
+    };
+    state.episodes.push(e);
+    saveState(state);
+    return e;
+  }
+
+  function updateEpisode(vol, fields) {
+    vol = Number(vol);
+    var state = loadState();
+    var e = state.episodes.filter(function (x) { return x.vol === vol; })[0];
+    if (!e) { return undefined; }
+    if (fields.title !== undefined) { e.title = fields.title; }
+    if (fields.intro !== undefined) { e.intro = fields.intro; }
+    saveState(state);
+    return e;
+  }
+
+  function deleteEpisode(vol) {
+    vol = Number(vol);
+    var state = loadState();
+    state.episodes = state.episodes.filter(function (x) { return x.vol !== vol; });
+    saveState(state);
+    return true;
+  }
+
+  function deleteTrack(vol, index) {
+    vol = Number(vol);
+    var state = loadState();
+    var e = state.episodes.filter(function (x) { return x.vol === vol; })[0];
+    if (!e || index < 0 || index >= e.tracks.length) { return undefined; }
+    e.tracks.splice(index, 1);
+    saveState(state);
+    return e;
+  }
+
+  function deleteComment(vol, index) {
+    vol = Number(vol);
+    var state = loadState();
+    var e = state.episodes.filter(function (x) { return x.vol === vol; })[0];
+    if (!e || index < 0 || index >= e.comments.length) { return undefined; }
+    e.comments.splice(index, 1);
+    saveState(state);
+    return e;
+  }
+
   function escapeHtml(str) {
     return String(str)
       .replace(/&/g, "&amp;")
@@ -140,5 +216,12 @@
   window.getTopics = getTopics;
   window.addTopic = addTopic;
   window.voteTopic = voteTopic;
+  window.updateTopic = updateTopic;
+  window.deleteTopic = deleteTopic;
+  window.addEpisode = addEpisode;
+  window.updateEpisode = updateEpisode;
+  window.deleteEpisode = deleteEpisode;
+  window.deleteTrack = deleteTrack;
+  window.deleteComment = deleteComment;
   window.escapeHtml = escapeHtml;
 })();

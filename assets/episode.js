@@ -8,6 +8,7 @@
 
   var vol = qsVol();
   var root = document.getElementById("episode");
+  var editingEp = false;   // whether the 주제 header is in edit mode
 
   function fmtDate(iso) {
     var d = new Date(iso);
@@ -27,7 +28,7 @@
       return;
     }
 
-    var tracks = ep.tracks.map(function (t) {
+    var tracks = ep.tracks.map(function (t, i) {
       var song = t.song || t.title || "";   // fall back to old combined field
       var artist = t.artist || "";
       var yt = isSafeUrl(t.url)
@@ -44,25 +45,43 @@
         '<div class="rec-foot">' +
           '<span class="rec-by">' + escapeHtml(t.by) + '</span>' +
           '<span class="rec-reason">' + escapeHtml(t.reason) + '</span>' +
+          '<button class="mini-act" data-deltrack="' + i + '">삭제</button>' +
         '</div>' +
       '</div>';
     }).join("");
 
     var comments = ep.comments.length
-      ? ep.comments.map(function (c) {
+      ? ep.comments.map(function (c, i) {
           return '<div class="comment">' +
             '<div class="c-name">' + escapeHtml(c.name) + ' <span class="c-at">' + fmtDate(c.at) + '</span></div>' +
             '<p class="c-text">' + escapeHtml(c.text) + '</p>' +
+            '<div class="mini-acts"><button class="mini-act" data-delcomment="' + i + '">삭제</button></div>' +
           '</div>';
         }).join("")
       : '<p style="color:var(--muted);">아직 이야기가 없어요. 첫 감상을 남겨보세요.</p>';
 
+    var head = editingEp
+      ? '<div class="ep-head">' +
+          '<span class="kicker">Vol.' + ep.vol + '</span>' +
+          '<form class="form edit-form" id="ep-edit" style="margin-top:14px;">' +
+            '<div class="row"><input name="title" value="' + escapeHtml(ep.title) + '" placeholder="주제 제목" required /></div>' +
+            '<div class="row"><textarea name="intro" placeholder="주제 소개" required>' + escapeHtml(ep.intro) + '</textarea></div>' +
+            '<button class="btn" type="submit">저장</button>' +
+            '<button class="btn-ghost" type="button" id="ep-edit-cancel">취소</button>' +
+          '</form>' +
+        '</div>'
+      : '<div class="ep-head">' +
+          '<span class="kicker">Vol.' + ep.vol + '</span>' +
+          '<h1 class="display ep-title">' + escapeHtml(ep.title) + '</h1>' +
+          '<p class="ep-intro">' + escapeHtml(ep.intro) + '</p>' +
+          '<div class="mini-acts">' +
+            '<button class="mini-act" id="ep-edit-btn">주제 수정</button>' +
+            '<button class="mini-act" id="ep-del-btn">주제 삭제</button>' +
+          '</div>' +
+        '</div>';
+
     root.innerHTML =
-      '<div class="ep-head">' +
-        '<span class="kicker">Vol.' + ep.vol + '</span>' +
-        '<h1 class="display ep-title">' + escapeHtml(ep.title) + '</h1>' +
-        '<p class="ep-intro">' + escapeHtml(ep.intro) + '</p>' +
-      '</div>' +
+      head +
 
       '<p class="kicker section-label">추천곡</p>' +
       '<div id="tracks">' + tracks + '</div>' +
@@ -101,6 +120,48 @@
       var f = e.target;
       addComment(vol, { name: f.name.value.trim(), text: f.text.value.trim() });
       render();
+    });
+
+    // ----- episode (주제) edit / delete -----
+    if (editingEp) {
+      var epf = document.getElementById("ep-edit");
+      epf.addEventListener("submit", function (e) {
+        e.preventDefault();
+        updateEpisode(vol, { title: epf.title.value.trim(), intro: epf.intro.value.trim() });
+        editingEp = false;
+        render();
+      });
+      document.getElementById("ep-edit-cancel").addEventListener("click", function () {
+        editingEp = false; render();
+      });
+    } else {
+      document.getElementById("ep-edit-btn").addEventListener("click", function () {
+        editingEp = true; render();
+      });
+      document.getElementById("ep-del-btn").addEventListener("click", function () {
+        if (confirm("이 주제를 통째로 삭제할까요? 추천곡과 댓글도 함께 사라집니다.")) {
+          deleteEpisode(vol);
+          location.href = "index.html";
+        }
+      });
+    }
+
+    // ----- track / comment delete -----
+    Array.prototype.forEach.call(root.querySelectorAll("[data-deltrack]"), function (b) {
+      b.addEventListener("click", function () {
+        if (confirm("이 추천곡을 삭제할까요?")) {
+          deleteTrack(vol, Number(b.getAttribute("data-deltrack")));
+          render();
+        }
+      });
+    });
+    Array.prototype.forEach.call(root.querySelectorAll("[data-delcomment]"), function (b) {
+      b.addEventListener("click", function () {
+        if (confirm("이 댓글을 삭제할까요?")) {
+          deleteComment(vol, Number(b.getAttribute("data-delcomment")));
+          render();
+        }
+      });
     });
   }
 
