@@ -105,7 +105,7 @@ alter table votes    enable row level security;
 
 -- profiles: everyone reads; user updates own row (admin change guarded by trigger); admin updates anyone
 create policy profiles_sel on profiles for select using (true);
-create policy profiles_upd_own on profiles for update using (id = auth.uid());
+create policy profiles_upd_own on profiles for update using (id = auth.uid()) with check (id = auth.uid());
 create policy profiles_upd_admin on profiles for update using (public.is_admin());
 
 -- episodes: everyone reads; only admin writes

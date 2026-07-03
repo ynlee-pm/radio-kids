@@ -111,7 +111,7 @@ update profiles set is_admin=true where id='<유나님 로그인 후의 UUID>';
 
 - [ ] Supabase 프로젝트 생성 & Project URL, Anon Key 확보
 - [ ] Google OAuth 클라이언트 생성 & Supabase에 등록
-- [ ] `db/schema.sql` 실행 (테이블 6개, 정책 18개, 함수/트리거 생성됨)
+- [ ] `db/schema.sql` 실행 (테이블 6개, 정책 22개, 함수/트리거 생성됨)
 - [ ] `db/seed.sql` 실행 (선택)
 - [ ] GitHub Pages URL을 Supabase Redirect URLs에 등록
 - [ ] 최초 로그인 후 Admin 권한 부여
