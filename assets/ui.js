@@ -39,3 +39,21 @@ export async function mountNav(linksSelector) {
   var si = document.getElementById("nav-signin");
   if (si) si.addEventListener("click", function () { signInWithGoogle(); });
 }
+
+export function attachMenu(btn, items) {
+  btn.addEventListener("click", function (e) {
+    e.stopPropagation();
+    closeAllMenus();
+    var menu = document.createElement("div");
+    menu.className = "menu-pop";
+    items.forEach(function (it) {
+      var b = document.createElement("button");
+      b.className = "menu-item"; b.textContent = it.label;
+      b.addEventListener("click", function (ev) { ev.stopPropagation(); closeAllMenus(); it.onClick(); });
+      menu.appendChild(b);
+    });
+    btn.parentNode.appendChild(menu);
+  });
+}
+function closeAllMenus() { Array.prototype.forEach.call(document.querySelectorAll(".menu-pop"), function (m) { m.remove(); }); }
+document.addEventListener("click", closeAllMenus);

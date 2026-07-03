@@ -99,3 +99,11 @@ export async function addTopic(t) {
   const { error } = await supabase.from("topics").insert({ title: t.title, description: t.description, created_by: uid });
   if (error) throw error;
 }
+
+export async function updateTrack(id, f) { const { error } = await supabase.from("tracks").update(f).eq("id", id); if (error) throw error; }
+export async function deleteTrack(id) { const { error } = await supabase.from("tracks").delete().eq("id", id); if (error) throw error; }
+export async function deleteComment(id) { const { error } = await supabase.from("comments").delete().eq("id", id); if (error) throw error; }
+export async function updateTopic(id, f) { const { error } = await supabase.from("topics").update(f).eq("id", id); if (error) throw error; }
+export async function deleteTopic(id) { const { error } = await supabase.from("topics").delete().eq("id", id); if (error) throw error; }
+export async function updateEpisode(id, f) { const { error } = await supabase.from("episodes").update(f).eq("id", id); if (error) throw error; }
+export async function deleteEpisode(id) { const { error } = await supabase.from("episodes").delete().eq("id", id); if (error) throw error; }

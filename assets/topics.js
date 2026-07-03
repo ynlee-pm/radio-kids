@@ -1,5 +1,5 @@
-import { mountNav, getMe } from "./ui.js";
-import { getTopics, addTopic, signInWithGoogle, escapeHtml } from "./data.js";
+import { mountNav, getMe, attachMenu } from "./ui.js";
+import { getTopics, addTopic, signInWithGoogle, escapeHtml, canEdit, updateTopic, deleteTopic } from "./data.js";
 
 (async function () {
   "use strict";
@@ -17,11 +17,25 @@ import { getTopics, addTopic, signInWithGoogle, escapeHtml } from "./data.js";
       console.error("getTopics failed:", e);
     }
 
+    var me = null;
+    try {
+      me = await getMe();
+    } catch (e) {
+      console.error("getMe failed:", e);
+      me = { session: null, profile: null };
+    }
+
     listEl.innerHTML = topics.length
       ? topics.map(function (t) {
-          return '<div class="topic-card">' +
+          var menu = canEdit(t, me)
+            ? '<div class="menu-wrap"><button type="button" class="menu-btn" aria-label="더보기">⋯</button></div>'
+            : '';
+          return '<div class="topic-card" data-id="' + escapeHtml(t.id) + '">' +
             '<div class="tc-body">' +
-              '<div class="tc-title">' + escapeHtml(t.title) + '</div>' +
+              '<div class="tc-title-row">' +
+                '<div class="tc-title">' + escapeHtml(t.title) + '</div>' +
+                menu +
+              '</div>' +
               '<p class="tc-desc">' + escapeHtml(t.description) + '</p>' +
               '<div class="tc-by">' + escapeHtml(t.author) + ' 제안</div>' +
             '</div>' +
@@ -33,13 +47,8 @@ import { getTopics, addTopic, signInWithGoogle, escapeHtml } from "./data.js";
         }).join("")
       : '<p style="color:var(--muted);">아직 제안된 주제가 없어요.</p>';
 
-    var me = null;
-    try {
-      me = await getMe();
-    } catch (e) {
-      console.error("getMe failed:", e);
-      me = { session: null, profile: null };
-    }
+    wireTopicMenus(topics, me);
+
     var loggedIn = !!(me && me.session);
 
     if (!formHost) return;
@@ -68,6 +77,59 @@ import { getTopics, addTopic, signInWithGoogle, escapeHtml } from "./data.js";
       formHost = document.getElementById("topic-login-btn");
       formHost.addEventListener("click", function () { signInWithGoogle(); });
     }
+  }
+
+  function wireTopicMenus(topics, me) {
+    topics.forEach(function (t) {
+      if (!canEdit(t, me)) return;
+      var card = listEl.querySelector('.topic-card[data-id="' + cssEscape(t.id) + '"]');
+      if (!card) return;
+      var btn = card.querySelector(".menu-btn");
+      if (!btn) return;
+      attachMenu(btn, [
+        { label: "수정", onClick: function () { openTopicEditForm(card, t); } },
+        { label: "삭제", onClick: async function () {
+            if (!confirm("이 주제를 삭제할까요?")) return;
+            try {
+              await deleteTopic(t.id);
+              await render();
+            } catch (err) {
+              console.error("deleteTopic failed:", err);
+              alert("삭제하지 못했어요. 잠시 후 다시 시도해주세요.");
+            }
+          } }
+      ]);
+    });
+  }
+
+  function openTopicEditForm(card, t) {
+    card.outerHTML =
+      '<div class="topic-card" data-id="' + escapeHtml(t.id) + '">' +
+        '<form class="form topic-edit-form" style="flex:1;">' +
+          '<div class="row"><input name="title" placeholder="주제" value="' + escapeHtml(t.title) + '" required /></div>' +
+          '<div class="row"><input name="desc" placeholder="한 줄 설명" value="' + escapeHtml(t.description) + '" required /></div>' +
+          '<button class="btn" type="submit">저장</button>' +
+          '<button class="btn-ghost" type="button" data-act="cancel">취소</button>' +
+        '</form>' +
+      '</div>';
+    var newCard = listEl.querySelector('.topic-card[data-id="' + cssEscape(t.id) + '"]');
+    var form = newCard.querySelector(".topic-edit-form");
+    form.addEventListener("submit", async function (e) {
+      e.preventDefault();
+      var f = e.target;
+      try {
+        await updateTopic(t.id, { title: f.title.value.trim(), description: f.desc.value.trim() });
+        await render();
+      } catch (err) {
+        console.error("updateTopic failed:", err);
+        alert("수정하지 못했어요. 잠시 후 다시 시도해주세요.");
+      }
+    });
+    form.querySelector('[data-act="cancel"]').addEventListener("click", function () { render(); });
+  }
+
+  function cssEscape(s) {
+    return (window.CSS && CSS.escape) ? CSS.escape(String(s)) : String(s).replace(/["\\]/g, "\\$&");
   }
 
   await render();
